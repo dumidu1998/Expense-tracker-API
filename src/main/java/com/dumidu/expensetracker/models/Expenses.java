@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -23,6 +24,9 @@ public class Expenses {
 
     @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
 
     @CreationTimestamp
     @Column(nullable = false,updatable = false)

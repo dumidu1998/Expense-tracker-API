@@ -1,16 +1,13 @@
 package com.dumidu.expensetracker.controllers;
 
-import com.dumidu.expensetracker.dto.FilterDateAndType;
-import com.dumidu.expensetracker.dto.FilterDateOnly;
-import com.dumidu.expensetracker.models.Budget;
+import com.dumidu.expensetracker.dto.FilterDateAndTypeRequest;
+import com.dumidu.expensetracker.dto.FilterDateOnlyRequest;
 import com.dumidu.expensetracker.models.Expenses;
-import com.dumidu.expensetracker.services.BudgetService;
 import com.dumidu.expensetracker.services.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RequestMapping("/expense")
@@ -52,13 +49,20 @@ public class ExpenseController {
     }
 
     @GetMapping("/bydaterange")
-    public  ResponseEntity getExpenseByDate(@RequestBody FilterDateOnly dates){
+    public  ResponseEntity getExpenseByDate(@RequestBody FilterDateOnlyRequest dates){
         return ResponseEntity.ok().body(expenseService.getByDateOnly(dates));
     }
 
     @GetMapping("/bydatetype")
-    public  ResponseEntity getExpenseByDateAndType(@RequestBody FilterDateAndType data){
+    public  ResponseEntity getExpenseByDateAndType(@RequestBody FilterDateAndTypeRequest data){
         return ResponseEntity.ok().body(expenseService.getByDateAndType(data));
     }
+
+    @GetMapping("/cardsdata")
+    public  ResponseEntity getCardData(){
+        return ResponseEntity.ok().body(expenseService.getCardData());
+    }
+
+
 
 }

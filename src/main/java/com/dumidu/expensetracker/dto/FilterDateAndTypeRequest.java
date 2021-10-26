@@ -9,7 +9,8 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilterDateOnly {
+public class FilterDateAndTypeRequest {
     private Date startDate;
     private Date endDate;
+    private String type;
 }

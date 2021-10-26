@@ -1,12 +1,16 @@
 package com.dumidu.expensetracker.services;
 
-import com.dumidu.expensetracker.dto.FilterDateAndType;
-import com.dumidu.expensetracker.dto.FilterDateOnly;
+import com.dumidu.expensetracker.dto.DashboardCards;
+import com.dumidu.expensetracker.dto.FilterDateAndTypeRequest;
+import com.dumidu.expensetracker.dto.FilterDateOnlyRequest;
 import com.dumidu.expensetracker.models.Expenses;
+import com.dumidu.expensetracker.repositories.BudgetRepository;
 import com.dumidu.expensetracker.repositories.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +19,9 @@ public class ExpenseService {
 
     @Autowired
     private ExpenseRepository expenseRepository;
+
+    @Autowired
+    private BudgetRepository budgetRepository;
 
 
     public List<Expenses> getAll() {
@@ -60,11 +67,21 @@ public class ExpenseService {
         }
     }
 
-    public List<Expenses> getByDateOnly(FilterDateOnly dates) {
-        return expenseRepository.findByDateBetween(dates.getStartDate(),dates.getEndDate());
+    public List<Expenses> getByDateOnly(FilterDateOnlyRequest dates) {
+        return expenseRepository.findAllByDateBetween(dates.getStartDate(),dates.getEndDate());
     }
 
-    public List<Expenses> getByDateAndType(FilterDateAndType data) {
-        return expenseRepository.findByDateBetweenAndExpenseType(data.getStartDate(),data.getEndDate(),data.getType());
+    public List<Expenses> getByDateAndType(FilterDateAndTypeRequest data) {
+        return expenseRepository.findAllByDateBetweenAndExpenseType(data.getStartDate(),data.getEndDate(),data.getType());
+    }
+
+    public DashboardCards getCardData() {
+        DashboardCards res = new DashboardCards();
+        res.setTotalSpent(expenseRepository.getSumOfCurrentMonth());
+        res.setExpenseUsage((expenseRepository.getSumOfCurrentMonth().divide(budgetRepository.findFirstByOrderByBudgetIdDesc().getBudget(),2, RoundingMode.CEILING)).multiply(BigDecimal.valueOf(100)));
+        res.setExpenses(expenseRepository.findTop5ByOrderByDateDesc());
+        res.setLastExpense(expenseRepository.findFirstByOrderByDateDesc().getAmount());
+        res.setTopSpentCat(expenseRepository.getTopCat().get(0).getExpenseType());
+        return res;
     }
 }
