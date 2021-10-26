@@ -25,7 +25,8 @@ public class Expenses {
     private String description;
 
     @CreationTimestamp
-    private Date registeredDate;
+    @Column(nullable = false,updatable = false)
+    private Date addedDate;
 
     @Column
     @Temporal(TemporalType.DATE)
@@ -34,5 +35,4 @@ public class Expenses {
 
     @Column(nullable = false)
     private String expenseType;
-
 }
