@@ -26,7 +26,7 @@ jobs:
         cache: maven
         
     - name: Build with Maven
-      run: mvn -B clean package spring-boot:repackage -DskipTests --file pom.xml
+      run: mvn -B clean install -DskipTests --file pom.xml
       
     - name: Archive production artifact
       uses: actions/upload-artifact@v2
