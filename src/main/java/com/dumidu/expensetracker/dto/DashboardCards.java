@@ -17,4 +17,5 @@ public class DashboardCards {
     private BigDecimal totalSpent;
     private String topSpentCat;
     private BigDecimal lastExpense;
+    private BigDecimal remainingBudget;
 }

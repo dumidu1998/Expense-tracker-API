@@ -48,14 +48,20 @@ public class ExpenseController {
         return ResponseEntity.ok().body(expenseService.deleteExpense(id));
     }
 
-    @GetMapping("/bydaterange")
+    @PostMapping("/bydaterange")
     public  ResponseEntity getExpenseByDate(@RequestBody FilterDateOnlyRequest dates){
+        System.out.println(dates.getStartDate());
+        System.out.println(dates.getEndDate());
         return ResponseEntity.ok().body(expenseService.getByDateOnly(dates));
     }
 
-    @GetMapping("/bydatetype")
+    @PostMapping("/bydatetype")
     public  ResponseEntity getExpenseByDateAndType(@RequestBody FilterDateAndTypeRequest data){
         return ResponseEntity.ok().body(expenseService.getByDateAndType(data));
+    }
+    @GetMapping("/bytype/{name}")
+    public  ResponseEntity getExpenseByDateAndType(@PathVariable("name") String type){
+        return ResponseEntity.ok().body(expenseService.getByType(type));
     }
 
     @GetMapping("/cardsdata")

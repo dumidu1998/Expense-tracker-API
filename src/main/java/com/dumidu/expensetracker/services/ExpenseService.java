@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,7 +24,7 @@ public class ExpenseService {
 
 
     public List<Expenses> getAll() {
-        return expenseRepository.findAll();
+        return expenseRepository.findAllByOrderByDateDesc();
     }
 
     public String addExpense(Expenses expense) {
@@ -46,7 +45,7 @@ public class ExpenseService {
         try {
             Expenses extExpense = expenseRepository.findByExpenseId(expense.getExpenseId());
             if(extExpense!=null){
-                expense.setDate(new Date());
+                expense.setDate(expense.getDate());
                 expenseRepository.save(expense);
                 return "Expense Updated Successfully!!";
             }else{
@@ -75,6 +74,10 @@ public class ExpenseService {
         return expenseRepository.findAllByDateBetweenAndExpenseType(data.getStartDate(),data.getEndDate(),data.getType());
     }
 
+    public List<Expenses> getByType(String type) {
+        return expenseRepository.findAllByExpenseTypeIsOrderByDateDesc(type);
+    }
+
     public DashboardCards getCardData() {
         DashboardCards res = new DashboardCards();
         res.setTotalSpent(expenseRepository.getSumOfCurrentMonth());
@@ -82,6 +85,7 @@ public class ExpenseService {
         res.setExpenses(expenseRepository.findTop5ByOrderByDateDesc());
         res.setLastExpense(expenseRepository.findFirstByOrderByDateDesc().getAmount());
         res.setTopSpentCat(expenseRepository.getTopCat().get(0).getExpenseType());
+        res.setRemainingBudget(budgetRepository.findFirstByOrderByBudgetIdDesc().getBudget().subtract(expenseRepository.getSumOfCurrentMonth()));
         return res;
     }
 }

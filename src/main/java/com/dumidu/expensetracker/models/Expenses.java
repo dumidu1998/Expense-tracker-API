@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -33,9 +34,8 @@ public class Expenses {
     private Date addedDate;
 
     @Column
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-dd-MM")
-    private Date date;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
     @Column(nullable = false)
     private String expenseType;
