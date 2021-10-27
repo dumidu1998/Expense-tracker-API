@@ -22,7 +22,7 @@ public interface ExpenseRepository extends JpaRepository<Expenses, Long> {
     List<Expenses> getTopCat();
     List<Expenses> findAllByExpenseTypeIsOrderByDateDesc(String type);
 
-    @Query(value="select SUM(e.amount) from Expenses e where e.date = ?1", nativeQuery=true)
+    @Query(value="select SUM(e.amount) from expenses e where e.date = ?1", nativeQuery=true)
     BigDecimal getSumOfADay(LocalDate d);
 
     @Query(value="select SUM(e.amount) from Expenses e where month(e.date) = month(current_date) and e.expenseType=?1")
