@@ -69,6 +69,15 @@ public class ExpenseController {
         return ResponseEntity.ok().body(expenseService.getCardData());
     }
 
+    @GetMapping("/linechartdata")
+    public  ResponseEntity getLineChartData(){
+        return ResponseEntity.ok().body(expenseService.getLineChartData());
+    }
+
+    @GetMapping("/piechartdata")
+    public  ResponseEntity getPieChartData(){
+        return ResponseEntity.ok().body(expenseService.getPieChartData());
+    }
 
 
 }

@@ -14,11 +14,17 @@ public interface ExpenseRepository extends JpaRepository<Expenses, Long> {
     List<Expenses> findAllByDateBetween(LocalDate d1, LocalDate d2);
     List<Expenses> findAllByOrderByDateDesc();;
     List<Expenses> findAllByDateBetweenAndExpenseType(LocalDate d1, LocalDate d2, String type);
-    @Query("select SUM(e.amount) from Expenses e where month(e.date) = month(current_date)")
+    @Query(value = "select SUM(e.amount) from Expenses e where month(e.date) = month(current_date)")
     BigDecimal getSumOfCurrentMonth();
     List<Expenses> findTop5ByOrderByDateDesc();
     Expenses findFirstByOrderByDateDesc();
     @Query("from Expenses e where month(e.date) = month(current_date) GROUP BY e.expenseType ORDER BY e.amount DESC")
     List<Expenses> getTopCat();
     List<Expenses> findAllByExpenseTypeIsOrderByDateDesc(String type);
+
+    @Query(value="select SUM(e.amount) from Expenses e where e.date = ?1", nativeQuery=true)
+    BigDecimal getSumOfADay(LocalDate d);
+
+    @Query(value="select SUM(e.amount) from Expenses e where month(e.date) = month(current_date) and e.expenseType=?1")
+    BigDecimal getSumByCat(String cat);
 }

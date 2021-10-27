@@ -3,6 +3,7 @@ package com.dumidu.expensetracker.services;
 import com.dumidu.expensetracker.dto.DashboardCards;
 import com.dumidu.expensetracker.dto.FilterDateAndTypeRequest;
 import com.dumidu.expensetracker.dto.FilterDateOnlyRequest;
+import com.dumidu.expensetracker.dto.LineChartData;
 import com.dumidu.expensetracker.models.Expenses;
 import com.dumidu.expensetracker.repositories.BudgetRepository;
 import com.dumidu.expensetracker.repositories.ExpenseRepository;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -87,5 +90,30 @@ public class ExpenseService {
         res.setTopSpentCat(expenseRepository.getTopCat().get(0).getExpenseType());
         res.setRemainingBudget(budgetRepository.findFirstByOrderByBudgetIdDesc().getBudget().subtract(expenseRepository.getSumOfCurrentMonth()));
         return res;
+    }
+
+    public List<LineChartData> getLineChartData() {
+        List<LineChartData> res = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now();
+        int year = currentDate.getYear();
+        int month = currentDate.getMonthValue();
+        int todayDate = currentDate.getDayOfMonth();
+        for(int i=1;i<=todayDate;i++){
+            LineChartData current = new LineChartData();
+            current.setDay(i);
+            LocalDate queryValue = LocalDate.of(year, month, i);
+            current.setDaySum(expenseRepository.getSumOfADay(queryValue)==null?BigDecimal.ZERO:expenseRepository.getSumOfADay(queryValue));
+            res.add(current);
+        }
+        return res;
+    }
+
+    public List getPieChartData() {
+       List <BigDecimal> res = new ArrayList<>();
+       String [] array = {"Food and Beverages","Health Care","Transportation","Entertainment","Other"};
+        for (String str : array) {
+            res.add(expenseRepository.getSumByCat(str)==null?BigDecimal.ZERO:expenseRepository.getSumByCat(str));
+        }
+       return res;
     }
 }
