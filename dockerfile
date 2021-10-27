@@ -1,4 +1,4 @@
 FROM openjdk:11
-ADD target/autoaid.jar autoaid.jar
+ADD target/expense.jar expense.jar
 EXPOSE 9000
-ENTRYPOINT ["java","-jar","autoaid.jar"]
+ENTRYPOINT ["java","-jar","expense.jar"]
