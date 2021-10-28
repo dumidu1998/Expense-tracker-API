@@ -5,5 +5,5 @@
 Front-end Repo - 
 https://github.com/dumidu1998/Expense-tracker-front
 
-Application is hosted and can be acccessed with - 
+Live Demo - 
 http://autoaid.xyz:3001
