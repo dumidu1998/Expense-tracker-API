@@ -1,4 +1,4 @@
-# Expense-tracker-API
+# Expense-tracker-App-Backend 
 
 ## Backend for Expense Tracker with spring boot and 
 
